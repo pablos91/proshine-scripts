@@ -4,25 +4,45 @@
 -- as published by Sam Hocevar. See the LICENSE file for more details.
 
 name = "Leveling: Victory Road (near Indigo Plateau)"
-author = "Silv3r"
-description = [[This script will train the first pokémon of your team.
-It will also try to capture shinies by throwing pokéballs.
-Start anywhere between the exit of the Victory Road and the Indigo Plateau.]]
+author = "ananas"
+description = [[hehe]]
 
-function onPathAction()
-	if isPokemonUsable(1) then
+
+
+function onStart()
+	if getUsablePokemonCount() > 0 then
 		if getMapName() == "Indigo Plateau Center" then
-			moveToMap("Indigo Plateau")
+			moveToCell(10,28)
 		elseif getMapName() == "Indigo Plateau" then
-			moveToMap("Victory Road Kanto 3F")
+			moveToCell(21,31)
 		elseif getMapName() == "Victory Road Kanto 3F" then
-			moveToRectangle(46, 14, 47, 22)
+			moveToRectangle(40, 21, 47, 22)
 		end
 	else
 		if getMapName() == "Victory Road Kanto 3F" then
-			moveToMap("Indigo Plateau")
+			moveToCell(46,13)
 		elseif getMapName() == "Indigo Plateau" then
-			moveToMap("Indigo Plateau Center")
+			moveToCell(32,12)
+		elseif getMapName() == "Indigo Plateau Center" then
+			talkToNpcOnCell(4, 22)
+		end
+	end
+end
+
+function onPathAction()
+	if getUsablePokemonCount() > 0 then
+		if getMapName() == "Indigo Plateau Center" then
+			moveToCell(10,28)
+		elseif getMapName() == "Indigo Plateau" then
+			moveToCell(21,31)
+		elseif getMapName() == "Victory Road Kanto 3F" then
+			moveToRectangle(40, 21, 47, 22)
+		end
+	else
+		if getMapName() == "Victory Road Kanto 3F" then
+			moveToCell(46,13)
+		elseif getMapName() == "Indigo Plateau" then
+			moveToCell(32,12)
 		elseif getMapName() == "Indigo Plateau Center" then
 			talkToNpcOnCell(4, 22)
 		end
@@ -30,14 +50,14 @@ function onPathAction()
 end
 
 function onBattleAction()
-	if isWildBattle() and isOpponentShiny() then
-		if useItem("Ultra Ball") or useItem("Great Ball") or useItem("Pokeball") then
-			return
-		end
-	end
-	if getActivePokemonNumber() == 1 then
-		return attack() or sendUsablePokemon() or run() or sendAnyPokemon()
-	else
-		return run() or attack() or sendUsablePokemon() or sendAnyPokemon()
-	end
+    if isWildBattle() and isOpponentShiny() then
+        if useItem("Ultra Ball") or useItem("Great Ball") or useItem("Pokeball") then
+            return
+        end
+    end
+    if getUsablePokemonCount() > 0 then
+        return attack() or sendUsablePokemon() or run() or sendAnyPokemon()
+    else
+        return run() or attack() or sendUsablePokemon() or sendAnyPokemon()
+    end
 end
